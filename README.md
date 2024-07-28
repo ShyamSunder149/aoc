@@ -1,2 +1,6 @@
 # aoc23
-Learning a new language along with solving AOC23 challs
+Learning new language along with solving AOC23 challs
+
+- [ ] Day 1: Trebuchet?! 
+  - [x] Part 1 
+  - [ ] Part 2
