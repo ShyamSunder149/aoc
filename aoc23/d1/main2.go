@@ -1,4 +1,3 @@
-
 package main
 
 import (
@@ -36,37 +35,39 @@ func main ()  {
     "nine" : "9",
     "zero" : "0",
   }
-  
+ 
+  num_idx := 0
+
   for _, value := range lines {
     
+    num_idx = 0
     numeric_string := ""
+    
+    for _, char := range value {
+      if _, err := strconv.Atoi(string(char)); err == nil { break }
+      num_idx++;
+    }
 
-    flag := true
-    i := 0
-    ts := ""
-    for flag {
-      fmt.Println(ts)
-      if _, err := strconv.Atoi(string(value[i])); err == nil {
-        ts = ts[1:]
-        if _, ok := mappings[ts];  ok{
-          value = strings.Replace(value, ts, mappings[ts], -1)
-          flag = false 
-        } else { ts = ts[1:] }
-      } else {
-        ts += string(value[i])
-        if _, ok := mappings[ts]; ok {
-        value = strings.Replace(value, ts, mappings[ts], -1)
-          flag = false
-        }
-        i += 1
-      }
-    } 
+    done_flag := false
+
+    if num_idx > 0 {
+      for i:=0;i<num_idx;i++ {
+       temp := strings.TrimSpace(value[:i])
+       for k, v := range mappings {
+         if strings.HasPrefix(temp, k) {
+           value = strings.Replace(value, k, v, -1)
+           done_flag = true 
+           break 
+         }
+       }
+       if done_flag { break } 
+     }
+    }
 
     for k, v := range mappings {
       value = strings.Replace(value, k, v, -1)
     }
     
-    fmt.Println(value)  
     for _, character := range value {
       if _, err := strconv.Atoi(string(character)); err == nil  {
         numeric_string = numeric_string + string(character)
