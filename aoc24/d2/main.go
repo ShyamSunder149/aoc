@@ -7,6 +7,8 @@ import (
   "os"
   "strings"
   "strconv"
+  "reflect"
+  "sort"
 )
 
 func main() {
@@ -38,34 +40,27 @@ func main() {
  
   count := 0
   for _, report := range reports {
-    
-    condition := false
-    n := len(report)
-    isIncreasing := true 
-    if report[0] == report[1] {
-      continue 
-    }
-    if report[0] > report[1] {
-      isIncreasing = false 
-    }
+    sorted_slice := make([]int, len(report))
+    reversed_slice := make([]int, len(report))
 
-    for i := 1; i < n-1; i++ {
-      if report[i] == report[i + 1] {
-        condition = false
-        break;
-      }
-      if (isIncreasing && report[i+1] - report[i] < 4 && report[i+1] - report[i] > 0) || (report[i] - report[i + 1] > 0 && !isIncreasing && report[i] - report[i + 1] < 4) {
-        condition = true 
-      } else {
-        condition = false
-        break 
-      }
+    copy(sorted_slice, report)
+    copy(reversed_slice, report)
+
+    sort.Ints(sorted_slice)
+    sort.Sort(sort.Reverse(sort.IntSlice(reversed_slice)))
+    
+    inc_or_dec := (reflect.DeepEqual(sorted_slice, report) || reflect.DeepEqual(reversed_slice, report))
+    ok := true
+    for i := 1; i < len(sorted_slice); i++ {
+      if sorted_slice[i-1] == sorted_slice[i] || sorted_slice[i] - sorted_slice[i-1] > 3 {   
+        ok = false 
+      } 
     }
     
-    if condition {
-      count++;
+    if inc_or_dec && ok {
+      count++
     }
-  }
+  }  
 
-  fmt.Println(count-1)
+  fmt.Println(count)
 }
