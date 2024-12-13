@@ -1,4 +1,4 @@
-# aoc24 
+# aoc24 - Golang 
 - [x] Day 1 : Historian Hysteria
   - [x] Part 1 
   - [x] Part 2
@@ -11,10 +11,10 @@
 - [x] Day 4 
   - [x] Part 1 
   - [x] Part 2 
+- [x] Day 5
+  - [x] Part 1 
 
-# aoc23
-Learning new language along with solving AOC23 challs
-
+# aoc23 
 - [ ] Day 1 : Trebuchet?! 
   - [x] Part 1 
   - [ ] Part 2
