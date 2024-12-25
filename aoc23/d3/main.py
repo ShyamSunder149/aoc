@@ -1,34 +1,23 @@
 import re 
 f = open("input.txt", "r").read()
 
-f = f.split("\n")
-c = 0
-flen = len(f)-1
-vlen = len(f[0])
-for i in range(flen) :
-    values = re.findall("\d+", f[i])
-    for j in values :
-        ok = False
-        validxf = f[i].index(j)
-        validxl = validxf + len(j) - 1
-        
-        # check first col 
-        if validxf - 1 >= 0 :
-            if f[i][validxf-1] != "." : ok = True
-            if i - 1 >= 0 and f[i-1][validxf-1] != "." : ok = True
-            if i + 1 < flen and f[i+1][validxf-1] != "." : ok = True 
-        
-        # check last col 
-        if validxl + 1 < vlen :
-            if f[i][validxl+1] != "." : ok = True 
-            if i - 1 >= 0 and f[i-1][validxl+1] != "." : ok = True 
-            if i + 1 < flen and f[i+1][validxl+1] != "." : ok = True 
-        
-        # check all cols top and bottom 
-        for k in j : 
-            idx = f[i].index(k)
-            if i - 1 >= 0 and f[i-1][idx] != "." : ok = True 
-            if i + 1 < flen and f[i+1][idx] != "." : ok = True 
-        if ok : c += int(j)
+grid = f.splitlines()
+cs = set()
 
-print(c)
+for r, row in enumerate(grid) :
+    for c, ch in enumerate(row) :
+        if ch.isdigit() or ch == "." : continue
+        for cr in [r-1, r, r+1] :
+            for cc in [c-1, c, c+1] :
+                if cr < 0 or cr >= len(grid) or cc < 0 or cc >= len(grid[cr]) or not grid[cr][cc].isdigit() : continue
+                while cc > 0 and grid[cr][cc-1].isdigit() : cc -= 1 
+                cs.add((cr, cc))
+ns = []
+for r, c in cs : 
+    s = ""
+    while c < len(grid[r]) and grid[r][c].isdigit() : 
+        s += grid[r][c]
+        c += 1
+    ns.append(int(s))
+
+print(sum(ns))
